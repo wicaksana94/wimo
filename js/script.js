@@ -68,8 +68,8 @@ $('.see-detail').on('click', function() {
 });
 
 $('.nav-page-about').on('click', function() {
-    // $('body').html('');
-    // $('body').load('about.html');
+    $('#main-content').html('');
+    $('#main-content').load('about.html');
 });
 
 $('.nav-item').on('click', function() {
