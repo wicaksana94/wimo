@@ -69,7 +69,7 @@ $('.see-detail').on('click', function() {
 
 $('.navbar-brand').on('click', function() {
     $('#main-content').html('');
-    $('#main-content').load('search.html');
+    $('#main-content').load('home.html');
 });
 
 $('.nav-page-search').on('click', function() {
