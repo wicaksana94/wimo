@@ -67,6 +67,11 @@ $('.see-detail').on('click', function() {
     console.log('hello');
 });
 
+$('.nav-page-search').on('click', function() {
+    $('#main-content').html('');
+    $('#main-content').load('search.html');
+});
+
 $('.nav-page-about').on('click', function() {
     $('#main-content').html('');
     $('#main-content').load('about.html');
