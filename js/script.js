@@ -67,6 +67,11 @@ $('.see-detail').on('click', function() {
     console.log('hello');
 });
 
+$('.navbar-brand').on('click', function() {
+    $('#main-content').html('');
+    $('#main-content').load('search.html');
+});
+
 $('.nav-page-search').on('click', function() {
     $('#main-content').html('');
     $('#main-content').load('search.html');
