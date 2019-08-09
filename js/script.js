@@ -136,6 +136,7 @@ $('.nav-page-search').on('click', function() {
 });
 
 $('.nav-page-about').on('click', function() {
+    show_loading();
     $('#main-content').html('');
     $('#search-result').html('');
     $('#main-content').load('about.html');
