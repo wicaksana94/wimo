@@ -126,11 +126,13 @@ $('#search-result').on('click', '.see-detail', function() {
 });
 
 $('.navbar-brand').on('click', function() {
+    show_loading();
     $('#main-content').html('');
     $('#main-content').load('home.html');
 });
 
 $('.nav-page-search').on('click', function() {
+    show_loading();
     $('#main-content').html('');
     $('#main-content').load('search.html');
 });
