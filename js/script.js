@@ -14,6 +14,7 @@ function search_movies(){
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Basic " + btoa(""));
+          show_loading();
         },
         data: {
             'apikey': '62185f40',
@@ -21,6 +22,8 @@ function search_movies(){
             's': $('#search-input').val()
         },
         success: function(result){
+            // $("div.modal-backdrop.fade.show").remove();
+            // $("div.swal2-container").remove();
             if (result.Response == 'True') {
                 let movies = result.Search;
                 console.log(movies);
@@ -35,7 +38,9 @@ function search_movies(){
                                 <div class="card-body">
                                 <h5 class="card-title">`+ data.Title +`</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">`+ data.Year +`</h6>
-                                <a href="#" class="btn btn-primary see-detail">See Details</a>
+                                <a href="#" class="btn btn-primary see-detail" attr_data="`+ data.imdbID +`" data-toggle="modal" data-target="#exampleModal">
+                                    See Details
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -63,8 +68,61 @@ $('#search-input').keyup(function( event ) {
     }
 });
 
-$('.see-detail').on('click', function() {
-    console.log('hello');
+$('#search-result').on('click', '.see-detail', function() {
+    $('.modal-title').html('...');
+    $('div.modal-body').html('...');
+    $.ajax({
+        url: 'https://www.omdbapi.com', 
+        type: 'GET',
+        dataType: 'jsonp',
+        cors: true ,
+        contentType:'application/json',
+        secure: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Basic " + btoa(""));
+          show_loading();
+        },
+        data: {
+            'apikey': '62185f40',
+            'type': 'movie',
+            'i': $(this).attr('attr_data'),
+        },
+        success: function(result){
+            // $("div.modal-backdrop.fade.show").remove();
+            // $("div.swal2-container").remove();
+            if (result.Response=='True') {
+                $('.modal-title').html(result.Title);
+                $('div.modal-body').html(`
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="`+ result.Poster +`" width="100px">
+                        </div>
+                        <div class="col">
+                            <label>`+ result.Title +`</label>
+                            <br>
+                            <label>Released : `+ result.Released +`</label>
+                            <br>
+                            <label>Runtime : `+ result.Runtime +`</label>
+                            <br>
+                            <label>Genre : `+ result.Genre +`</label>
+                            <br>
+                            <label>Director : `+ result.Director +`</label>
+                            <br>
+                            <label>Actors : `+ result.Actors +`</label>
+                            <br>
+                            <label>Production : `+ result.Production +`</label>
+                        </div>
+                    </div>
+                `);
+            } else {
+                alert(result.Error);
+            }
+        },
+    });
+
 });
 
 $('.navbar-brand').on('click', function() {
@@ -86,3 +144,28 @@ $('.nav-item').on('click', function() {
     $('.nav-item').removeClass('active');
     $(this).addClass('active');
 });
+
+function show_loading() {
+    let timerInterval
+    Swal.fire({
+      html: 'Please Wait...',
+      timer: 3000,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          Swal.getContent().querySelector('strong')
+            .textContent = Swal.getTimerLeft()
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.timer
+      ) {
+        // console.log('I was closed by the timer')
+      }
+    })
+};
