@@ -28,8 +28,9 @@ function search_movies(){
                 let movies = result.Search;
                 console.log(movies);
                 $.each(movies, function( i, data ) {
-                    if (data.Poster=='N/A') {
-                        data.Poster = 'https://via.placeholder.com/300x400.png?text=Image+Not+Available'
+                    if (data.Poster=="N/A" || data.Poster.search("http://ia.media-imdb.com/") == 0) {
+                        data.Poster = 'https://via.placeholder.com/300x400.png?text=Image+Not+Available';
+                    
                     }
                     $('#search-result').append(`
                         <div class="col-md-3">
